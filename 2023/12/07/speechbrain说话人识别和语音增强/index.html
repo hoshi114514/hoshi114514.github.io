@@ -1,0 +1,243 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>speechbrain说话人识别、语音增强 | 梨花颂</title><meta name="author" content="珩"><meta name="copyright" content="珩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="有了之前的ASR的经验后，说话人识别和语音增强的模型训练就很简单了 说话人识别cd进入\speechbrain\templates\speaker_id文件夹 输入python train.py train.yaml 然后你就会发现，它又要下一遍数据集😱 ，三个解决办法 数据集问题复制data文件夹把speech_recognition中的data文件夹复制到speaker_id下，其中 dev">
+<meta property="og:type" content="article">
+<meta property="og:title" content="speechbrain说话人识别、语音增强">
+<meta property="og:url" content="https://hoshi114514.github.io/2023/12/07/speechbrain%E8%AF%B4%E8%AF%9D%E4%BA%BA%E8%AF%86%E5%88%AB%E5%92%8C%E8%AF%AD%E9%9F%B3%E5%A2%9E%E5%BC%BA/index.html">
+<meta property="og:site_name" content="梨花颂">
+<meta property="og:description" content="有了之前的ASR的经验后，说话人识别和语音增强的模型训练就很简单了 说话人识别cd进入\speechbrain\templates\speaker_id文件夹 输入python train.py train.yaml 然后你就会发现，它又要下一遍数据集😱 ，三个解决办法 数据集问题复制data文件夹把speech_recognition中的data文件夹复制到speaker_id下，其中 dev">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2023/11/19/lUNQ3owDVgva6cj.jpg">
+<meta property="article:published_time" content="2023-12-07T12:54:46.164Z">
+<meta property="article:modified_time" content="2023-12-08T12:56:02.661Z">
+<meta property="article:author" content="珩">
+<meta property="article:tag" content="语音学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2023/11/19/lUNQ3owDVgva6cj.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://hoshi114514.github.io/2023/12/07/speechbrain%E8%AF%B4%E8%AF%9D%E4%BA%BA%E8%AF%86%E5%88%AB%E5%92%8C%E8%AF%AD%E9%9F%B3%E5%A2%9E%E5%BC%BA/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'speechbrain说话人识别、语音增强',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-08 20:56:02'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2023/11/19/lUNQ3owDVgva6cj.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2023/11/19/BhKIPXbSov9lFpW.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="梨花颂"><img class="site-icon" src="https://s2.loli.net/2023/11/19/lUNQ3owDVgva6cj.jpg"/><span class="site-name">梨花颂</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">speechbrain说话人识别、语音增强</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-12-07T12:54:46.164Z" title="发表于 2023-12-07 20:54:46">2023-12-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-12-08T12:56:02.661Z" title="更新于 2023-12-08 20:56:02">2023-12-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%AD%E9%9F%B3%E5%AD%A6%E4%B9%A0/">语音学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="speechbrain说话人识别、语音增强"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>有了之前的ASR的经验后，说话人识别和语音增强的模型训练就很简单了</p>
+<h1 id="说话人识别"><a href="#说话人识别" class="headerlink" title="说话人识别"></a>说话人识别</h1><p>cd进入\speechbrain\templates\speaker_id文件夹</p>
+<p>输入<code>python train.py train.yaml</code></p>
+<p>然后你就会发现，它又要下一遍数据集😱 ，三个解决办法</p>
+<h2 id="数据集问题"><a href="#数据集问题" class="headerlink" title="数据集问题"></a>数据集问题</h2><h3 id="复制data文件夹"><a href="#复制data文件夹" class="headerlink" title="复制data文件夹"></a>复制data文件夹</h3><p>把speech_recognition中的data文件夹复制到speaker_id下，其中</p>
+<p>dev-clean-2.tar.gz、test-clean.tar.gz、train-clean-5.tar.gz是不需要的</p>
+<p>因为这三个文件夹已经解压到data&#x2F;LibriSpeech文件夹中</p>
+<h3 id="修改data路径"><a href="#修改data路径" class="headerlink" title="修改data路径"></a>修改data路径</h3><p>打开speaker_id&#x2F;train.yaml</p>
+<p><img src="https://s2.loli.net/2023/12/07/g5GfJCMR3jD9PX2.png" alt="https://s2.loli.net/2023/12/07/g5GfJCMR3jD9PX2.png"></p>
+<p>.&#x2F;data的意思就是当前路径下的data文件夹，修改这个路径</p>
+<p>使用相对路径<code> ../speech_recognition/data</code></p>
+<p>使用绝对路径 <code>D:/Speech/newspeechbrain/speechbrain/templates/speech_recognition/data</code>这是我的绝对路径，你改为自己的</p>
+<h3 id="添加命令"><a href="#添加命令" class="headerlink" title="添加命令"></a>添加命令</h3><p>在<code>python train.py train.yaml</code>后面添加<code>--data_folder=/path/of/your/data</code></p>
+<p>&#x3D;号后面是data的路径</p>
+<h2 id="模型使用"><a href="#模型使用" class="headerlink" title="模型使用"></a>模型使用</h2><p>在speaker_id文件夹下新建test.py文件，输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">import torchaudio</span><br><span class="line">from speechbrain.pretrained import EncoderClassifier</span><br><span class="line">classifier = EncoderClassifier.from_hparams(source=&quot;speechbrain/spkrec-xvect-voxceleb&quot;)</span><br><span class="line">signal, fs =torchaudio.load(&#x27;/content/speechbrain/tests/samples/single-mic/example1.wav&#x27;)</span><br><span class="line"></span><br><span class="line"># Compute speaker embeddings</span><br><span class="line">embeddings = classifier.encode_batch(signal)</span><br><span class="line"></span><br><span class="line"># Perform classification</span><br><span class="line">output_probs, score, index, text_lab = classifier.classify_batch(signal)</span><br><span class="line"></span><br><span class="line"># Posterior log probabilities</span><br><span class="line">print(output_probs)</span><br><span class="line"></span><br><span class="line"># Score (i.e, max log posteriors)</span><br><span class="line">print(score)</span><br><span class="line"></span><br><span class="line"># Index of the predicted speaker</span><br><span class="line">print(index)</span><br><span class="line"></span><br><span class="line"># Text label of the predicted speaker</span><br><span class="line">print(text_lab)</span><br></pre></td></tr></table></figure>
+
+<p>torchaudio.load的路径需要修改为自己的路径，example.wav是已有的文件，不需要自己录</p>
+<p>运行结果如下</p>
+<p><img src="https://s2.loli.net/2023/12/07/KMuiONrRHSLUYZV.png" alt="https://s2.loli.net/2023/12/07/KMuiONrRHSLUYZV.png"></p>
+<h1 id="语音增强"><a href="#语音增强" class="headerlink" title="语音增强"></a>语音增强</h1><p>cd进入\speechbrain\templates\enhancement文件夹</p>
+<p>输入<code>python train.py train.yaml</code></p>
+<p>其他同说话人识别相同</p>
+<h2 id="模型使用-1"><a href="#模型使用-1" class="headerlink" title="模型使用"></a>模型使用</h2><h3 id="失败操作-但有参考价值"><a href="#失败操作-但有参考价值" class="headerlink" title="失败操作(但有参考价值)"></a>失败操作(但有参考价值)</h3><p>官方教程里没有给语音增强模型的示例</p>
+<p>根据前面语音识别和说话人识别的示例代码，发现都引用了<code>speechbrain.pretrained</code>库</p>
+<p>在搜索引擎搜索<code>speechbrain.pretrained</code>可以找到speechbrain的库函数，其实speechbrain官网也可以找到，点击官网上方<a target="_blank" rel="noopener" href="https://speechbrain.readthedocs.io/en/latest/index.html">DOCUMENTATION</a>也可以进来</p>
+<p><a target="_blank" rel="noopener" href="https://speechbrain.readthedocs.io/en/latest/API/speechbrain.pretrained.interfaces.html">speechbrain.pretrained.interfaces module — SpeechBrain 0.5.0 documentation</a></p>
+<p><img src="https://s2.loli.net/2023/12/08/e2mhMFbHtgoZu7T.png" alt="https://s2.loli.net/2023/12/08/e2mhMFbHtgoZu7T.png"></p>
+<p>SpectralMaskEnhancement即为语音增强的库</p>
+<p>点击SpectralMaskEnhancement即可跳转到对应位置，找到example</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import torch</span><br><span class="line">from speechbrain.pretrained import SpectralMaskEnhancement</span><br><span class="line"># Model is downloaded from the speechbrain HuggingFace repo</span><br><span class="line">tmpdir = getfixture(&quot;tmpdir&quot;)</span><br><span class="line">enhancer = SpectralMaskEnhancement.from_hparams(</span><br><span class="line">    source=&quot;speechbrain/metricgan-plus-voicebank&quot;,</span><br><span class="line">    savedir=tmpdir,</span><br><span class="line">)</span><br><span class="line">enhanced = enhancer.enhance_file(</span><br><span class="line">    &quot;speechbrain/metricgan-plus-voicebank/example.wav&quot;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>看了下enhance_file的介绍</p>
+<p><img src="https://s2.loli.net/2023/12/08/dh9nPeGBSFyaJuX.png" alt="https://s2.loli.net/2023/12/08/dh9nPeGBSFyaJuX.png"></p>
+<p>修改filename为自己录制的文件，运行后什么也没发生，语音也没去噪，以为是没写输出位置的问题</p>
+<p>添加output_filename，结果直接报错</p>
+<p>Error opening ‘D:&#x2F;ASR_test.flac’: Format not recognised</p>
+<p>无论是wav格式、flac格式还是文件夹路径都不行</p>
+<h3 id="成功操作"><a href="#成功操作" class="headerlink" title="成功操作"></a>成功操作</h3><p>在example中发现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source=&quot;speechbrain/metricgan-plus-voicebank&quot;</span><br></pre></td></tr></table></figure>
+
+<p>搜索metricgan-plus-voicebank模型，在hugging face中找到了</p>
+<p><a target="_blank" rel="noopener" href="https://huggingface.co/speechbrain/metricgan-plus-voicebank">speechbrain&#x2F;metricgan-plus-voicebank · Hugging Face</a></p>
+<p>下面有该模型的使用示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">import torch</span><br><span class="line">import torchaudio</span><br><span class="line">from speechbrain.pretrained import SpectralMaskEnhancement</span><br><span class="line"></span><br><span class="line">enhance_model = SpectralMaskEnhancement.from_hparams(</span><br><span class="line">    source=&quot;speechbrain/metricgan-plus-voicebank&quot;,</span><br><span class="line">    savedir=&quot;pretrained_models/metricgan-plus-voicebank&quot;,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"># Load and add fake batch dimension</span><br><span class="line">noisy = enhance_model.load_audio(</span><br><span class="line">    &quot;speechbrain/metricgan-plus-voicebank/example.wav&quot;</span><br><span class="line">).unsqueeze(0)</span><br><span class="line"></span><br><span class="line"># Add relative length tensor</span><br><span class="line">enhanced = enhance_model.enhance_batch(noisy, lengths=torch.tensor([1.]))</span><br><span class="line"></span><br><span class="line"># Saving enhanced signal on disk</span><br><span class="line">torchaudio.save(&#x27;enhanced.wav&#x27;, enhanced.cpu(), 16000)</span><br></pre></td></tr></table></figure>
+
+<p>load_audio的参数为语音文件的路径，torchaudio.save中修改去噪后的语音的路径</p>
+<p>我们先来合成一个带噪声的语音，也可以选择去外面直接录</p>
+<p>使用au，录制一段自己的语音，之前录过可以跳过</p>
+<p><img src="https://s2.loli.net/2023/12/08/Hc7TenjopyNLqxb.png" alt="https://s2.loli.net/2023/12/08/Hc7TenjopyNLqxb.png"></p>
+<p>在白噪声网站下载噪声，我用的是<a target="_blank" rel="noopener" href="https://pixabay.com/zh/sound-effects/search/%E7%99%BD%E5%99%AA%E9%9F%B3/">Free 白噪音 Sound Effects Download - Pixabay</a></p>
+<p>不建议在搜索引擎直接搜白噪声，会找到很多国内的网站，基本上都要收费</p>
+<p>au新建多轨混音项目，把语音文件和噪声文件拖进去</p>
+<p><img src="https://s2.loli.net/2023/12/08/bWEZPirN9Q4k5tV.png" alt="https://s2.loli.net/2023/12/08/bWEZPirN9Q4k5tV.png"></p>
+<p>在左边调节语音和噪声音量的大小，进度条拖动到语音结束部分，右键噪声部分，选择拆分，之后把后面多余的部分删掉，导出为wav文件即可，如下</p>
+<p><img src="https://s2.loli.net/2023/12/08/IkUVNSy2FK1mqb9.png" alt="https://s2.loli.net/2023/12/08/IkUVNSy2FK1mqb9.png"></p>
+<p>运行语音增强，得到去噪声后的语音</p>
+<p><img src="https://s2.loli.net/2023/12/08/d8K5qxOF7gvbrLZ.png" alt="https://s2.loli.net/2023/12/08/d8K5qxOF7gvbrLZ.png"></p>
+<p>高频噪声去除了，但是低频的噪声还有很多，语音质量也有点下降</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://hoshi114514.github.io">珩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://hoshi114514.github.io/2023/12/07/speechbrain%E8%AF%B4%E8%AF%9D%E4%BA%BA%E8%AF%86%E5%88%AB%E5%92%8C%E8%AF%AD%E9%9F%B3%E5%A2%9E%E5%BC%BA/">https://hoshi114514.github.io/2023/12/07/speechbrain%E8%AF%B4%E8%AF%9D%E4%BA%BA%E8%AF%86%E5%88%AB%E5%92%8C%E8%AF%AD%E9%9F%B3%E5%A2%9E%E5%BC%BA/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://hoshi114514.github.io" target="_blank">梨花颂</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AF%AD%E9%9F%B3%E5%AD%A6%E4%B9%A0/">语音学习</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2023/11/19/lUNQ3owDVgva6cj.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/12/05/speechbrain%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/" title="speechbrain模型训练"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">speechbrain模型训练</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/12/03/HMM%E5%AD%A6%E4%B9%A0/" title="HMM（隐性马尔可夫模型）学习"><img class="cover" src="https://s2.loli.net/2023/12/03/kpyqUAZs7mLGISv.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-03</div><div class="title">HMM（隐性马尔可夫模型）学习</div></div></a></div><div><a href="/2023/12/04/speechbrain/" title="speechbrain准备工作"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-04</div><div class="title">speechbrain准备工作</div></div></a></div><div><a href="/2023/12/05/speechbrain%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/" title="speechbrain模型训练"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-05</div><div class="title">speechbrain模型训练</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2023/11/19/lUNQ3owDVgva6cj.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">珩</div><div class="author-info__description">努力才是硬道理</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/hoshi114514"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎，欢迎</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%B4%E8%AF%9D%E4%BA%BA%E8%AF%86%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">说话人识别</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%9B%86%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.</span> <span class="toc-text">数据集问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6data%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">1.1.1.</span> <span class="toc-text">复制data文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9data%E8%B7%AF%E5%BE%84"><span class="toc-number">1.1.2.</span> <span class="toc-text">修改data路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%91%BD%E4%BB%A4"><span class="toc-number">1.1.3.</span> <span class="toc-text">添加命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E4%BD%BF%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">模型使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%AD%E9%9F%B3%E5%A2%9E%E5%BC%BA"><span class="toc-number">2.</span> <span class="toc-text">语音增强</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E4%BD%BF%E7%94%A8-1"><span class="toc-number">2.1.</span> <span class="toc-text">模型使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%B1%E8%B4%A5%E6%93%8D%E4%BD%9C-%E4%BD%86%E6%9C%89%E5%8F%82%E8%80%83%E4%BB%B7%E5%80%BC"><span class="toc-number">2.1.1.</span> <span class="toc-text">失败操作(但有参考价值)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%90%E5%8A%9F%E6%93%8D%E4%BD%9C"><span class="toc-number">2.1.2.</span> <span class="toc-text">成功操作</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/07/speechbrain%E8%AF%B4%E8%AF%9D%E4%BA%BA%E8%AF%86%E5%88%AB%E5%92%8C%E8%AF%AD%E9%9F%B3%E5%A2%9E%E5%BC%BA/" title="speechbrain说话人识别、语音增强">speechbrain说话人识别、语音增强</a><time datetime="2023-12-07T12:54:46.164Z" title="发表于 2023-12-07 20:54:46">2023-12-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/05/speechbrain%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/" title="speechbrain模型训练">speechbrain模型训练</a><time datetime="2023-12-05T08:16:16.553Z" title="发表于 2023-12-05 16:16:16">2023-12-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/04/speechbrain/" title="speechbrain准备工作">speechbrain准备工作</a><time datetime="2023-12-04T10:00:35.479Z" title="发表于 2023-12-04 18:00:35">2023-12-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/03/HMM%E5%AD%A6%E4%B9%A0/" title="HMM（隐性马尔可夫模型）学习"><img src="https://s2.loli.net/2023/12/03/kpyqUAZs7mLGISv.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="HMM（隐性马尔可夫模型）学习"/></a><div class="content"><a class="title" href="/2023/12/03/HMM%E5%AD%A6%E4%B9%A0/" title="HMM（隐性马尔可夫模型）学习">HMM（隐性马尔可夫模型）学习</a><time datetime="2023-12-03T08:45:57.524Z" title="发表于 2023-12-03 16:45:57">2023-12-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/19/%E8%AF%84%E8%AE%BA%E5%8C%BA/" title="评论区">评论区</a><time datetime="2023-11-19T12:36:23.989Z" title="发表于 2023-11-19 20:36:23">2023-11-19</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://s2.loli.net/2023/11/19/BhKIPXbSov9lFpW.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 珩</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'CPHJvyMRXfVEPFCaPajmOdsf-gzGzoHsz',
+      appKey: 'q8wlJyI087IDsosKKgcClJPC',
+      avatar: 'monsterid',
+      serverURLs: 'https://cphjvymr.lc-cn-n1-shared.com',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
